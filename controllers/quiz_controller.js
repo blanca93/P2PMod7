@@ -42,6 +42,20 @@ exports.answer = function (req, res) {
 	})
 };
 
+// GET /quizes/new
+exports.new = function (req, res) {
+	var quiz = models.Quiz.build({pregunta: "Pregunta", respuesta: "Respuesta"}); //crea objeto quiz
+	res.render('quizes/new', {quiz: quiz});
+};
+
+// POST /quizes/create
+exports.create = function (req, res) {
+	var quiz = models.Quiz.build(req.body.quiz); //crea objeto quiz
+	quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){
+		res.redirect('/quizes'); // URL relativo a la lista de preguntas
+	})	
+};
+
 // GET /author
 exports.author = function (req, res) {
 	res.render('author', {autor: 'Blanca Sierra'});
