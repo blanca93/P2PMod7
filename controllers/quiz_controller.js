@@ -17,9 +17,16 @@ exports.load = function (req, res, next, quizId) {
 // GET /quizes
 
 exports.index = function (req, res, next) {
-	models.Quiz.findAll().then(function(quizes){
-		res.render('quizes/index', {quizes: quizes, errors: []});
-	}).catch (function (error) {next(error);});		
+	if (req.query.search){
+		var search = "%"+req.query.search.replace("/[ ]+/g","%")+"%";
+	 	models.Quiz.findAll({where: ["lower(pregunta) like lower(?)", search], order:"pregunta"}).then(function(quizes){
+	 		res.render('quizes/index', {quizes: quizes, errors: []});
+	 	}).catch (function (error) {next(error);});	
+	} else {
+		models.Quiz.findAll().then(function(quizes){
+			res.render('quizes/index', {quizes: quizes, errors: []});
+	}).catch (function (error) {next(error);});	
+	}	
 };
 
 // GET /quizes/:id
