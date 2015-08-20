@@ -53,7 +53,7 @@ var comment_path = path.join(__dirname,'comment');
 var Comment = sequelize.import(comment_path);
 
 //Definimos la relación 1 a N con la tabla Quiz
-Comment.belongsTo(Quiz); // Un comentario pertenece a un solo quiz. Sería belongsToMany en caso contrario.
+Comment.belongsTo(Quiz, {onDelete: 'cascade'}); // Un comentario pertenece a un solo quiz. Sería belongsToMany en caso contrario.
 Quiz.hasMany(Comment); // Un quiz puede tener muchos comentarios. Sería hasOne si solo pudiera tener uno.
 
 exports.Comment = Comment; // Exportamos el objeto tabla de comentarios

@@ -42,6 +42,22 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(function(req, res, next) {
+
+  if (req.session.user && req.session.lastaction) {
+    console.log(Date.now()-req.session.lastaction);
+    if(Date.now()-req.session.lastaction>20000) {
+      //res.redirect('/logout'); --> me daba error
+      delete req.session.user;
+    }
+  }
+
+  if (req.session.user) {
+    req.session.lastaction = Date.now();
+  }  
+
+  next();
+});
 
 app.use('/', routes);
 //app.use('/users', users);
